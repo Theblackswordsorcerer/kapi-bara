@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Smooth Trust Button</title>
+    <style>
+        body {
+            margin: 0;
+            min-height: 100vh;
+            background-color: black;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            overflow: hidden;
+            transition: background-color 1s linear;
+        }
+
+        button {
+            background-color: #9B4DE0;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: opacity 0.5s ease, transform 0.3s ease;
+        }
+
+        button:hover {
+            background-color: #8A45C7;
+            transform: scale(1.05);
+        }
+
+        #kapi-text {
+            color: white;
+            font-size: 24px;
+            font-weight: bold;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+            margin-bottom: 20px;
+        }
+
+        #nyan-video {
+            width: 50%; /* Smaller size */
+            height: auto;
+            opacity: 0;
+            transition: opacity 0.5s ease;
+        }
+    </style>
+</head>
+<body>
+    <button id="trust-button" onclick="activateExperience()">Trust me</button>
+    <div id="kapi-text">You have been Kapi Bara'd</div>
+
+    <script>
+        let audio;
+
+        function activateExperience() {
+            document.getElementById('trust-button').style.opacity = '0';
+            setTimeout(() => document.getElementById('trust-button').style.display = 'none', 500);
+
+            document.getElementById('kapi-text').style.opacity = '1';
+
+            const video = document.createElement('video');
+            video.id = 'nyan-video';
+            video.src = 'https://media1.giphy.com/media/VgIWeQBLg8Bwf8XAiX/giphy.mp4';
+            video.autoplay = true;
+            video.loop = true;
+            video.muted = true;
+            video.playsInline = true;
+            document.body.appendChild(video);
+
+            setTimeout(() => video.style.opacity = '1', 50);
+
+            // Audio setup with Dropbox link
+            audio = new Audio('https://www.dropbox.com/scl/fi/ah7nctapdg0745k4lutq0/spotifydown.com-Kapi-Bara-iPunkz.mp3?rlkey=pxjjcwzuiw7dy32ef2ytukhdt&raw=1');
+            audio.loop = true;
+            audio.volume = 0;
+            audio.play().then(() => {
+                let fadeInterval = setInterval(() => {
+                    if (audio.volume < 0.8) {
+                        audio.volume += 0.05;
+                    } else {
+                        clearInterval(fadeInterval);
+                    }
+                }, 100);
+            }).catch(error => console.warn('Audio playback error:', error));
+
+            // Ensure the audio restarts if it stops unexpectedly
+            audio.addEventListener('ended', () => {
+                audio.currentTime = 0;
+                audio.play();
+            });
+
+            // Background color chaos
+            setInterval(() => {
+                document.body.style.backgroundColor = `hsl(${Math.random() * 360}, 50%, 50%)`;
+            }, 1000);
+        }
+    </script>
+</body>
+</html>
